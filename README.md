@@ -22,16 +22,34 @@
 
 `docker-compose exec website flake8 . --exclude __init__.py`
 
-## CLI
+# CLI
 
-### List of all commands
+## List of all commands
 
 `docker-compose exec website snakeeyes`
 
-### Static analysis with Flake8
+## Static analysis with Flake8
 
 `docker-compose exec website snakeeyes flake8`
 
 `docker-compose exec website snakeeyes flake8 --help`
 
 `docker-compose exec website snakeeyes flake8 --no-skip-init`
+
+# Database
+
+Run PostgreSQL related tasks
+
+`docker-compose exec website snakeeyes db`
+
+Initialize the database
+
+`docker-compose exec website snakeeyes db init`
+
+Init and seed automatically 
+
+`docker-compose exec website snakeeyes db reset`
+
+Seed the database with an initial user
+
+`docker-compose exec website snakeeyes db seed`

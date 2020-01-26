@@ -29,6 +29,23 @@ flake8==3.7.8
 Click==6.4
 
 # Data and workers.
+#
+# Hello. This is Nick from the future (August 2019 to be exact). An emergency
+# addition had to be made below to fix an issue related to Docker recently
+# changing the internals of their Python image.
+#
+# On video it shows psycopg2 version 2.6.1 but I had to bump it to 2.8.3 here.
+psycopg2==2.8.3
+Flask-SQLAlchemy==2.1
+
+# Hello. This is Nick from the future (March 2019 to be exact). An emergency
+# addition had to be made below to fix an issue that resulted in SQLAlchemy
+# throwing an error. Flask-SQLAlchemy 2.1 doesn't version lock SQLAlchemy and
+# SQLAlchemy 1.3.x introduced breaking changes.
+#
+# The line below isn't covered on video, but it locks SQLAlchemy to 1.2.0. A
+# future update video will cover upgrading SQLAlchemy to 1.3.0 and more.
+SQLAlchemy==1.2.0
 
 # Hello. This is Nick from the future (December 2019 to be exact). Since we
 # upgraded to Python 3.7.x, we also have to update Celery to 4.3.x since older
@@ -46,3 +63,4 @@ WTForms-Components==0.9.7
 # Extensions.
 flask-debugtoolbar==0.10.0
 Flask-Mail==0.9.1
+Flask-Login==0.3.2

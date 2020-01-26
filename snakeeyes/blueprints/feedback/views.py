@@ -5,6 +5,7 @@ from flask import (
     request,
     url_for,
     render_template)
+from flask_login import current_user
 
 from snakeeyes.blueprints.feedback.forms import FeedbackForm
 
@@ -13,7 +14,8 @@ feedback = Blueprint('feedback', __name__, template_folder='templates')
 
 @feedback.route('/feedback', methods=['GET', 'POST'])
 def index():
-    form = FeedbackForm()
+    # Pre-populate the email field if the user is signed in.
+    form = FeedbackForm(obj=current_user)
 
     if form.validate_on_submit():
         # This prevents circular imports.
