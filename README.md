@@ -5,6 +5,8 @@
 * FAQ page
 * Test for FAQ page
 * Custom CLI command `hello`
+* Feedback page
+* Tests for Feedback page and tasks
 
 # How to run tests
 
