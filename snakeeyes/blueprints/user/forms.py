@@ -53,7 +53,7 @@ class WelcomeForm(ModelForm):
         Length(1, 16),
         # Part of the Python 3.7.x update included updating flake8 which means
         # we need to explicitly define our regex pattern with r'xxx'.
-        Regexp(r'^\w+$', message=username_message)
+        Regexp('^\w+$', message=username_message)
     ])
 
 
