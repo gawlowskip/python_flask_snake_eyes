@@ -36,6 +36,20 @@
 
 `docker-compose exec website snakeeyes flake8 --no-skip-init`
 
+## Generate fake data
+
+List of all commands 
+
+`docker-compose exec website snakeeyes add`
+
+Generate fake Users
+
+`docker-compose exec website snakeeyes add users`
+
+Generate all data
+
+`docker-compose exec website snakeeyes add all`
+
 # Database
 
 Run PostgreSQL related tasks
