@@ -47,3 +47,10 @@ then continue with the rest of the course and come back to this challenge.
 * Add GET route to confirm registration
 * Login only for confirmed user
 * If not confirmed - resend confirmation code
+
+# Section 14 - Logging, middleware and error handling
+
+What would your application use?
+
+Take a moment and think about other services your app might use in the real world. 
+Would it use the Disqus comment system? Then go ahead and add in a config option and template for it.
