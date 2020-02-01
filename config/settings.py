@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 DEBUG = True
+LOG_LEVEL = 'DEBUG'  # CRITICAL / ERROR / WARNING / INFO / DEBUG
 
 SERVER_NAME = 'localhost:8888'
 SECRET_KEY = 'insecurekeyfordev'

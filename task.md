@@ -47,3 +47,21 @@ then continue with the rest of the course and come back to this challenge.
 * Add GET route to confirm registration
 * Login only for confirmed user
 * If not confirmed - resend confirmation code
+
+# Section 14 - Logging, middleware and error handling
+
+What would your application use?
+
+Take a moment and think about other services your app might use in the real world. 
+Would it use the Disqus comment system? Then go ahead and add in a config option and template for it.
+
+# Section 15 - Quality of live CLI improvements
+
+It's up to you
+
+This challenge is up to you. What's a quality of life improvement that you'd like to see? If you thought of one, 
+then go at it and implement it yourself.
+
+Feel free to message me with your quality of life idea too, I'd be curious to see what you came up with.
+
+e.g. create a blueprint skeleton
