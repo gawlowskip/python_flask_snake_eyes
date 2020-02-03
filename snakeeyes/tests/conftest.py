@@ -76,7 +76,8 @@ def db(app):
     params = {
         'role': 'admin',
         'email': 'admin@local.host',
-        'password': 'password'
+        'password': 'password',
+        'coins': 100
     }
 
     admin = User(**params)

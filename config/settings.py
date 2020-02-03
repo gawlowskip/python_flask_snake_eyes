@@ -20,7 +20,7 @@ MAIL_PASSWORD = 'awesomepassword'
 
 # Celery.
 CELERY_BROKER_URL = 'redis://:devpassword@redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://:devpassword@redis:6379/0'
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -60,7 +60,9 @@ STRIPE_PLANS = {
         'interval_count': 1,
         'trial_period_days': 14,
         'statement_descriptor': 'SNAKEEYES BRONZE',
-        'metadata': {}
+        'metadata': {
+            'coins': 110
+        }
     },
     '1': {
         'id': 'gold',
@@ -72,6 +74,7 @@ STRIPE_PLANS = {
         'trial_period_days': 14,
         'statement_descriptor': 'SNAKEEYES GOLD',
         'metadata': {
+            'coins': 600,
             'recommended': True
         }
     },
@@ -84,6 +87,27 @@ STRIPE_PLANS = {
         'interval_count': 1,
         'trial_period_days': 14,
         'statement_descriptor': 'SNAKEEYES PLATINUM',
-        'metadata': {}
+        'metadata': {
+            'coins': 1500
+        }
     }
 }
+
+# Bet.
+DICE_ROLL_PAYOUT = {
+    '2': 36.0,
+    '3': 18.0,
+    '4': 12.0,
+    '5': 9.0,
+    '6': 7.2,
+    '7': 6.0,
+    '8': 7.2,
+    '9': 9.0,
+    '10': 12.0,
+    '11': 18.0,
+    '12': 36.0
+}
+
+RATELIMIT_STORAGE_URL = CELERY_BROKER_URL
+RATELIMIT_STRATEGY = 'fixed-window-elastic-expiry'
+RATELIMIT_HEADERS_ENABLED = True

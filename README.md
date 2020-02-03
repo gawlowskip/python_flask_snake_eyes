@@ -96,6 +96,8 @@ Init and seed automatically
 
 `docker-compose exec website snakeeyes db reset`
 
+`docker-compose exec website snakeeyes db reset --with-testdb`
+
 Seed the database with an initial user
 
 `docker-compose exec website snakeeyes db seed`
