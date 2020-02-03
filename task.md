@@ -65,3 +65,43 @@ then go at it and implement it yourself.
 Feel free to message me with your quality of life idea too, I'd be curious to see what you came up with.
 
 e.g. create a blueprint skeleton
+
+# Section 16 - Accepting recurring payments
+
+A double header
+
+This section was massive, so there's a lot to take in. Luckily most of the code is code that you won't have to fully 
+absorb and memorize because most of it is code you could port around to different projects and slightly modify.
+
+However, there's 2 things I'd like you to do.
+
+The first challenge is easy, try adding a new subscription plan, and feel free to play around with 
+the CSS so that 4 plans fit nicely.
+
+The second challenge is implementing another real life feature that you'll likely want if you ever create 
+an application that requires billing.
+
+This is a big one but don't worry, I know you can do it. Remember what I said in a previous challenge 
+about breaking things down into smaller problems? This is going to be one of those times haha.
+
+I'd like you to modify the coupon system to allow for URL based coupons. Instead of having to tell someone 
+to enter in XXX coupon code during payment, wouldn't it be nice if you could just send them a URL 
+to click with the coupon already activated?
+
+At a quick glance this is actually pretty easy to solve. Flask makes it easy to get query string parameters 
+and you could just pass it into the template if it exists. I'm sure you would have thought of that on your own, 
+but it's more complicated than that.
+
+In a real production grade situation you would want to be able to send someone a link to sign up with 
+a discount even if they didn't have a user account. Basically, you'll need to wire things up so that 
+if you send someone a payment URL with a coupon code and they are not signed up, 
+it will redirect them to sign up and after signing up it will redirect them to the payment form 
+with the coupon code intact.
+
+You'd also want it to work for users who already have an account but aren't signed in.
+
+This will involve changing a few things, perhaps you'd even consider changing 1 or more decorators. 
+You'll also need to use hidden fields in the user sign up / login forms to keep tabs on the discount code 
+because otherwise it will get lost.
+
+Good luck, and expect this feature to take a minimum of a few hours.
