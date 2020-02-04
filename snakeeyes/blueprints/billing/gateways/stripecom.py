@@ -65,11 +65,15 @@ class Charge(object):
         :type amount: int
         :return: Stripe charge
         """
-        return stripe.Charge.create(
+        foo = stripe.Charge.create(
             amount=amount,
             currency=currency,
             customer=customer_id,
             statement_descriptor='SNAKEEYES COINS')
+
+        print(foo)
+
+        return foo
 
 
 class Coupon(object):

@@ -18,6 +18,15 @@ MAIL_USE_SSL = False
 MAIL_USERNAME = 'you@gmail.com'
 MAIL_PASSWORD = 'awesomepassword'
 
+# Flask-Babel.
+LANGUAGES = {
+    'en': 'English',
+    'kl': 'Klingon',
+    'es': 'Spanish',
+    'pl': 'Polish',
+}
+BABEL_DEFAULT_LOCALE = 'en'
+
 # Celery.
 CELERY_BROKER_URL = 'redis://:devpassword@redis:6379/0'
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
