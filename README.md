@@ -36,6 +36,43 @@
 
 `docker-compose exec website snakeeyes flake8 --no-skip-init`
 
+## Database migrations
+
+```
+New Server Registration in pgAdmin
+---
+Name: SnakeEyes
+Host: localhost
+Port: 5432
+Maintance DB: postgres
+Username: snakeeyes
+Password: devpassword
+```
+
+Auto-generating migrations
+
+`docker-compose exec --user "$(id -u):$(id -g)" website alembic revision --autogenerate -m "Add foobar column to users"`
+
+Create new empty migration
+
+`docker-compose exec --user "$(id -u):$(id -g)" website alembic revision -m "create foo table"`
+
+Run migrations
+
+`docker-compose exec website alembic upgrade head`
+
+Downgrade migrations (rollback 1 revision)
+
+`docker-compose exec website alembic downgrade -1`
+
+Show current revision id
+
+`docker-compose exec website alembic current`
+
+Show revision history
+
+`docker-compose exec website alembic history --verbose`
+
 ## Generate fake data
 
 List of all commands 
