@@ -38,6 +38,7 @@ Click==6.4
 # On video it shows psycopg2 version 2.6.1 but I had to bump it to 2.8.3 here.
 psycopg2==2.8.3
 Flask-SQLAlchemy==2.1
+alembic==0.8.6
 
 # Hello. This is Nick from the future (March 2019 to be exact). An emergency
 # addition had to be made below to fix an issue that resulted in SQLAlchemy
@@ -72,3 +73,4 @@ flask-debugtoolbar==0.10.0
 Flask-Mail==0.9.1
 Flask-Login==0.3.2
 Flask-Limiter==0.9.3
+Flask-Babel==0.9

@@ -125,3 +125,12 @@ class TestCoupon(ViewTestMixin):
         assert_status_with_message(200, response,
                                    '{0} coupons(s)'
                                    ' were scheduled to be deleted.'.format(3))
+
+
+class TestInvoices(ViewTestMixin):
+    def test_index_page(self):
+        """ Index renders successfully. """
+        self.login()
+        response = self.client.get(url_for('admin.invoices'))
+
+        assert response.status_code == 200
