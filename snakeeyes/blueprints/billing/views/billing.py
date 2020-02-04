@@ -9,11 +9,12 @@ from flask import (
 )
 
 from flask_login import login_required, current_user
+from flask_babel import gettext as _
 
 from config import settings
 from lib.util_json import render_json
-from snakeeyes.blueprints.billing.forms import CreditCardForm, \
-    UpdateSubscriptionForm, CancelSubscriptionForm
+from snakeeyes.blueprints.billing.forms import SubscriptionForm, \
+    UpdateSubscriptionForm, CancelSubscriptionForm, PaymentForm
 from snakeeyes.blueprints.billing.models.coupon import Coupon
 from snakeeyes.blueprints.billing.models.subscription import Subscription
 from snakeeyes.blueprints.billing.models.invoice import Invoice
@@ -55,7 +56,7 @@ def coupon_code():
 @login_required
 def create():
     if current_user.subscription:
-        flash('You already have an active subscription.', 'info')
+        flash(_('You already have an active subscription.'), 'info')
         return redirect(url_for('user.settings'))
 
     plan = request.args.get('plan')
@@ -63,11 +64,11 @@ def create():
 
     # Guard against an invalid or missing plan.
     if subscription_plan is None and request.method == 'GET':
-        flash('Sorry, that plan did not exist.', 'error')
+        flash(_('Sorry, that plan did not exist.'), 'error')
         return redirect(url_for('billing.pricing'))
 
     stripe_key = current_app.config.get('STRIPE_PUBLISHABLE_KEY')
-    form = CreditCardForm(stripe_key=stripe_key, plan=plan)
+    form = SubscriptionForm(stripe_key=stripe_key, plan=plan)
 
     if form.validate_on_submit():
         subscription = Subscription()
@@ -78,9 +79,9 @@ def create():
                                       token=request.form.get('stripe_token'))
 
         if created:
-            flash('Awesome, thanks for subscribing!', 'success')
+            flash(_('Awesome, thanks for subscribing!'), 'success')
         else:
-            flash('You must enable JavaScript for this request.', 'warning')
+            flash(_('You must enable JavaScript for this request.'), 'warning')
 
         return redirect(url_for('user.settings'))
 
@@ -114,7 +115,7 @@ def update():
                                       plan=plan.get('id'))
 
         if updated:
-            flash('Your subscription has been updated.', 'success')
+            flash(_('Your subscription has been updated.'), 'success')
             return redirect(url_for('user.settings'))
 
     return render_template('billing/pricing.html',
@@ -128,7 +129,7 @@ def update():
 @login_required
 def cancel():
     if not current_user.subscription:
-        flash('You do not have an active subscription.', 'error')
+        flash(_('You do not have an active subscription.'), 'error')
         return redirect(url_for('user.settings'))
 
     form = CancelSubscriptionForm()
@@ -138,8 +139,8 @@ def cancel():
         cancelled = subscription.cancel(user=current_user)
 
         if cancelled:
-            flash('Sorry to see you go, your subscription has been cancelled.',
-                  'success')
+            flash(_('Sorry to see you go, your subscription has been '
+                    'cancelled.'), 'success')
             return redirect(url_for('user.settings'))
 
     return render_template('billing/cancel.html', form=form)
@@ -150,7 +151,7 @@ def cancel():
 @login_required
 def update_payment_method():
     if not current_user.credit_card:
-        flash('You do not have a payment method on file.', 'error')
+        flash(_('You do not have a payment method on file.'), 'error')
         return redirect(url_for('user.settings'))
 
     active_plan = Subscription.get_plan_by_id(
@@ -158,9 +159,9 @@ def update_payment_method():
 
     card = current_user.credit_card
     stripe_key = current_app.config.get('STRIPE_PUBLISHABLE_KEY')
-    form = CreditCardForm(stripe_key=stripe_key,
-                          plan=active_plan,
-                          name=current_user.name)
+    form = SubscriptionForm(stripe_key=stripe_key,
+                            plan=active_plan,
+                            name=current_user.name)
 
     if form.validate_on_submit():
         subscription = Subscription()
@@ -172,9 +173,9 @@ def update_payment_method():
                                                          'stripe_token'))
 
         if updated:
-            flash('Your payment method has been updated.', 'success')
+            flash(_('Your payment method has been updated.'), 'success')
         else:
-            flash('You must enable JavaScript for this request.', 'warning')
+            flash(_('You must enable JavaScript for this request.'), 'warning')
 
         return redirect(url_for('user.settings'))
 
@@ -182,11 +183,14 @@ def update_payment_method():
                            plan=active_plan, card_last4=str(card.last4))
 
 
-@billing.route('/billing_details')
+@billing.route('/billing_details', defaults={'page': 1})
+@billing.route('/billing_details/page/<int:page>')
 @handle_stripe_exceptions
 @login_required
-def billing_details():
-    invoices = Invoice.billing_history(current_user)
+def billing_details(page):
+    paginated_invoices = Invoice.query.filter(
+      Invoice.user_id == current_user.id) \
+        .order_by(Invoice.created_on.desc()).paginate(page, 12, True)
 
     if current_user.subscription:
         upcoming = Invoice.upcoming(current_user.payment_id)
@@ -197,4 +201,40 @@ def billing_details():
         coupon = None
 
     return render_template('billing/billing_details.html',
-                           invoices=invoices, upcoming=upcoming, coupon=coupon)
+                           paginated_invoices=paginated_invoices,
+                           upcoming=upcoming, coupon=coupon)
+
+
+@billing.route('/purchase_coins', methods=['GET', 'POST'])
+@login_required
+def purchase_coins():
+    stripe_key = current_app.config.get('STRIPE_PUBLISHABLE_KEY')
+    form = PaymentForm(stripe_key=stripe_key)
+
+    if form.validate_on_submit():
+        coin_bundles = current_app.config.get('COIN_BUNDLES')
+        coin_bundles_form = int(request.form.get('coin_bundles'))
+
+        bundle = next((item for item in coin_bundles if
+                       item['coins'] == coin_bundles_form), None)
+
+        if bundle is not None:
+            invoice = Invoice()
+            created = invoice.create(user=current_user,
+                                     currency=current_app.config.get(
+                                      'STRIPE_CURRENCY'),
+                                     amount=bundle.get('price_in_cents'),
+                                     coins=coin_bundles_form,
+                                     coupon=request.form.get('coupon_code'),
+                                     token=request.form.get('stripe_token'))
+
+            if created:
+                flash(_('%(amount)s coins have been added to your account.',
+                        amount=coin_bundles_form), 'success')
+            else:
+                flash(_('You must enable JavaScript for this request.'),
+                      'warning')
+
+            return redirect(url_for('bet.place_bet'))
+
+    return render_template('billing/purchase_coins.html', form=form)

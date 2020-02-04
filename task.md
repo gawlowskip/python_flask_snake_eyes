@@ -105,3 +105,16 @@ You'll also need to use hidden fields in the user sign up / login forms to keep 
 because otherwise it will get lost.
 
 Good luck, and expect this feature to take a minimum of a few hours.
+
+# Section 18 - Processing microtransactions
+
+Prepare yourself for 2 challenges
+
+The first one is trivial, and that's to add a new bundle to the application. Feel free to use any amount you want.
+
+The second one is a bit more involved. Let's say I'm your client and I just came at you angry because 
+your coupon system doesn't let me create 100% off coupons. Go ahead and try it if you don't believe me.
+
+This is because Stripe does not let you create "charges" that are $0. The bare minimum is 50 cents. 
+This is documented on Stripe's site and it's likely a problem you'll come across because in the real world 
+you might want to give your customers your product for free to try out.

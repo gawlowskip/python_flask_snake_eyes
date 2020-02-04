@@ -9,7 +9,7 @@ from snakeeyes.blueprints.billing.models.credit_card import CreditCard
 from snakeeyes.blueprints.billing.models.coupon import Coupon
 from snakeeyes.blueprints.billing.gateways.stripecom import Card as PaymentCard
 from snakeeyes.blueprints.billing.gateways.stripecom import \
-    Subscription as PaymentSubscription
+    Customer as PaymentCustomer, Subscription as PaymentSubscription
 from snakeeyes.blueprints.bet.models.coin import add_subscription_coins
 
 
@@ -86,10 +86,10 @@ class Subscription(ResourceMixin, db.Model):
         if coupon:
             self.coupon = coupon.upper()
 
-        customer = PaymentSubscription.create(token=token,
-                                              email=user.email,
-                                              plan=plan,
-                                              coupon=self.coupon)
+        customer = PaymentCustomer.create(token=token,
+                                          email=user.email,
+                                          plan=plan,
+                                          coupon=self.coupon)
 
         # Update the user account.
         user.payment_id = customer.id

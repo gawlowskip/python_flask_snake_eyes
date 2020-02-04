@@ -49,6 +49,9 @@ class User(UserMixin, ResourceMixin, db.Model):
 
     # Billing.
     name = db.Column(db.String(128), index=True)
+
+    foobar = db.Column(db.String(128), index=True)
+
     payment_id = db.Column(db.String(128), index=True)
     cancelled_subscription_on = db.Column(AwareDateTime())
     previous_plan = db.Column(db.String(128))
@@ -63,6 +66,9 @@ class User(UserMixin, ResourceMixin, db.Model):
     current_sign_in_ip = db.Column(db.String(45))
     last_sign_in_on = db.Column(AwareDateTime())
     last_sign_in_ip = db.Column(db.String(45))
+
+    # Additional settings.
+    locale = db.Column(db.String(5), nullable=False, server_default='en')
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.

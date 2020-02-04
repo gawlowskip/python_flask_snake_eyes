@@ -15,7 +15,7 @@ def coins_required(f):
         if current_user.coins == 0:
             flash("Sorry, you're out of coins. You should buy more.",
                   'warning')
-            return redirect(url_for('user.settings'))
+            return redirect(url_for('billing.purchase_coins'))
 
         return f(*args, **kwargs)
 
