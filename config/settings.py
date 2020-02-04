@@ -50,12 +50,13 @@ REMEMBER_COOKIE_DURATION = timedelta(days=90)
 STRIPE_SECRET_KEY = None
 STRIPE_PUBLISHABLE_KEY = None
 STRIPE_API_VERSION = '2016-03-07'
+STRIPE_CURRENCY = 'usd'
 STRIPE_PLANS = {
     '0': {
         'id': 'bronze',
         'name': 'Bronze',
         'amount': 100,
-        'currency': 'usd',
+        'currency': STRIPE_CURRENCY,
         'interval': 'month',
         'interval_count': 1,
         'trial_period_days': 14,
@@ -68,7 +69,7 @@ STRIPE_PLANS = {
         'id': 'gold',
         'name': 'Gold',
         'amount': 500,
-        'currency': 'usd',
+        'currency': STRIPE_CURRENCY,
         'interval': 'month',
         'interval_count': 1,
         'trial_period_days': 14,
@@ -82,7 +83,7 @@ STRIPE_PLANS = {
         'id': 'platinum',
         'name': 'Platinum',
         'amount': 1000,
-        'currency': 'usd',
+        'currency': STRIPE_CURRENCY,
         'interval': 'month',
         'interval_count': 1,
         'trial_period_days': 14,
@@ -92,6 +93,13 @@ STRIPE_PLANS = {
         }
     }
 }
+
+COIN_BUNDLES = [
+    {'coins': 100, 'price_in_cents': 100, 'label': '100 for $1'},
+    {'coins': 1000, 'price_in_cents': 900, 'label': '1,000 for $9'},
+    {'coins': 5000, 'price_in_cents': 4000, 'label': '5,000 for $40'},
+    {'coins': 10000, 'price_in_cents': 7000, 'label': '10,000 for $70'},
+]
 
 # Bet.
 DICE_ROLL_PAYOUT = {
